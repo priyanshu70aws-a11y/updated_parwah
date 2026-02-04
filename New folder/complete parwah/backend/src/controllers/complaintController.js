@@ -84,6 +84,7 @@ exports.createComplaint = async (req, res) => {
 
         await db.Notification.create({
           userId: req.user.id,
+          title: 'Duplicate report added',
           type: 'duplicate_reported',
           message: `Your report was added to "${originalComplaint.title}". You earned ${pointsData.points} points!`,
           complaintId: originalComplaint.id,
@@ -163,6 +164,7 @@ exports.createComplaint = async (req, res) => {
 
     await db.Notification.create({
       userId: req.user.id,
+      title: 'Complaint submitted',
       type: 'complaint_created',
       message: `Complaint "${title}" submitted! You earned ${pointsData.points} points.`,
       complaintId: complaint.id,
@@ -251,6 +253,7 @@ exports.updateComplaint = async (req, res) => {
 
       await db.Notification.create({
         userId: complaint.userId,
+        title: 'Status updated',
         type: 'status_update',
         message: `Status updated to ${status} for "${complaint.title}".`,
         complaintId: complaint.id,

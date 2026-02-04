@@ -130,6 +130,7 @@ exports.addComment = async (req, res) => {
 
     await db.Notification.create({
       userId: complaint.userId,
+      title: 'New comment',
       type: 'comment',
       message: `New comment on "${complaint.title}".`,
       complaintId: complaint.id,
