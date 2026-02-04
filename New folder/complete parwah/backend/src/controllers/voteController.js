@@ -1,4 +1,5 @@
 const db = require('../models');
+const { emitEvent } = require('../utils/eventBus');
 
 // Toggle vote (upvote/downvote)
 exports.toggleVote = async (req, res) => {
@@ -37,6 +38,7 @@ exports.toggleVote = async (req, res) => {
 
         console.log('✅ Vote removed');
         
+        emitEvent('vote.updated', { complaintId, userId, voteType, action: 'removed' });
         return res.json({
           success: true,
           message: 'Vote removed',
@@ -57,6 +59,7 @@ exports.toggleVote = async (req, res) => {
 
         console.log('✅ Vote changed');
         
+        emitEvent('vote.updated', { complaintId, userId, voteType, action: 'changed' });
         return res.json({
           success: true,
           message: 'Vote updated',
@@ -80,6 +83,7 @@ exports.toggleVote = async (req, res) => {
 
       console.log('✅ Vote added');
 
+      emitEvent('vote.updated', { complaintId, userId, voteType, action: 'added' });
       return res.json({
         success: true,
         message: 'Vote added',

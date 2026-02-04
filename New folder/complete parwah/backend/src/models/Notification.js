@@ -34,7 +34,17 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     type: {
-      type: DataTypes.ENUM('status_update', 'comment', 'assignment', 'escalation', 'resolution', 'system'),
+      type: DataTypes.ENUM(
+        'status_update',
+        'comment',
+        'assignment',
+        'escalation',
+        'resolution',
+        'system',
+        'complaint_created',
+        'duplicate_reported',
+        'vote'
+      ),
       allowNull: false
     },
     isRead: {

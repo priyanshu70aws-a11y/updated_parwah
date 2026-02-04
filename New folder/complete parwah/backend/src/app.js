@@ -118,6 +118,7 @@ const statsRoutes = require('./routes/statsRoutes');
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const realtimeRoutes = require('./routes/realtimeRoutes');
 
 // Basic route
 app.get('/', (req, res) => {
@@ -147,6 +148,7 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/realtime', realtimeRoutes);
 
 // 404 handler
 app.use((req, res) => {
