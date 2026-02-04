@@ -133,6 +133,7 @@ const Vote = require('./Vote')(sequelize);
 const Notification = require('./Notification')(sequelize);
 const UserPoint = require('./UserPoint')(sequelize);
 const Neighborhood = require('./Neighborhood')(sequelize);
+const StatusHistory = require('./StatusHistory')(sequelize);
 
 // Define all relationships
 User.hasMany(Complaint, { foreignKey: 'userId', as: 'complaints' });
@@ -160,6 +161,7 @@ Complaint.hasMany(Vote, { foreignKey: 'complaintId', as: 'votes' });
 Complaint.hasMany(Notification, { foreignKey: 'complaintId', as: 'notifications' });
 Complaint.belongsTo(Complaint, { foreignKey: 'duplicateOf', as: 'originalComplaint' });
 Complaint.belongsTo(Neighborhood, { foreignKey: 'neighborhoodGroupId', as: 'neighborhood' });
+Complaint.hasMany(StatusHistory, { foreignKey: 'complaintId', as: 'statusHistory' });
 
 ComplaintImage.belongsTo(Complaint, { foreignKey: 'complaintId', as: 'complaint' });
 
@@ -177,6 +179,9 @@ UserPoint.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 Neighborhood.belongsTo(Category, { foreignKey: 'categoryId', as: 'category' });
 Neighborhood.hasMany(Complaint, { foreignKey: 'neighborhoodGroupId', as: 'complaints' });
 
+StatusHistory.belongsTo(Complaint, { foreignKey: 'complaintId', as: 'complaint' });
+StatusHistory.belongsTo(User, { foreignKey: 'actorId', as: 'actor' });
+
 // Export everything
 const db = {
   sequelize,
@@ -190,7 +195,8 @@ const db = {
   Vote,
   Notification,
   UserPoint,
-  Neighborhood
+  Neighborhood,
+  StatusHistory
 };
 
 module.exports = db;
