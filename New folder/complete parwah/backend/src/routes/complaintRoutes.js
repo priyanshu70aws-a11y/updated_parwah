@@ -303,7 +303,12 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models');
 const { protect, authorize } = require('../middleware/auth');
-const { createComplaint, updateComplaint } = require('../controllers/complaintController');
+const {
+  createComplaint,
+  updateComplaint,
+  getHeatmapData,
+  getComplaintTimeline
+} = require('../controllers/complaintController');
 
 // GET complaints by status (must be before :id)
 router.get('/status/:status', async (req, res) => {
@@ -330,6 +335,9 @@ router.get('/status/:status', async (req, res) => {
   }
 });
 
+// Heatmap aggregation
+router.get('/heatmap', getHeatmapData);
+
 // GET all complaints
 router.get('/', async (req, res) => {
   try {
@@ -355,6 +363,9 @@ router.get('/', async (req, res) => {
     });
   }
 });
+
+// GET complaint timeline
+router.get('/:id/timeline', getComplaintTimeline);
 
 // GET single complaint by ID
 router.get('/:id', async (req, res) => {
