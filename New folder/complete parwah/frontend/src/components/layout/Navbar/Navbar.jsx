@@ -58,6 +58,14 @@ const Navbar = () => {
           >
             Leaderboard
           </button>
+          {user && (
+            <button
+              className={`nav-link ${isActive('/user') ? 'active' : ''}`}
+              onClick={() => navigate('/user')}
+            >
+              User Panel
+            </button>
+          )}
           {user?.role === 'admin' && (
             <button 
               className={`nav-link ${isActive('/admin') ? 'active' : ''}`}

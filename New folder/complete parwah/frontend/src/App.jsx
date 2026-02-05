@@ -162,6 +162,7 @@ import Leaderboard from './pages/Leaderboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminPanel from './pages/AdminPanel';
+import UserPanel from './pages/UserPanel';
 import NotFound from './pages/NotFound';
 
 
@@ -186,6 +187,15 @@ function App() {
                 <SubmitComplaint />
               </ProtectedRoute>
             } 
+          />
+
+          <Route
+            path="/user"
+            element={
+              <ProtectedRoute>
+                <UserPanel />
+              </ProtectedRoute>
+            }
           />
           
           {/* Admin Only Route */}

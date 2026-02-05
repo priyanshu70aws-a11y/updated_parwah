@@ -342,3 +342,60 @@ exports.getComplaintTimeline = async (req, res) => {
     });
   }
 };
+
+exports.getIssueGrouping = async (req, res) => {
+  try {
+    const complaints = await db.Complaint.findAll({
+      attributes: ['id', 'neighborhoodGroupId', 'categoryId', 'status'],
+      include: [
+        { model: db.Neighborhood, as: 'neighborhood', attributes: ['id', 'name'] },
+        { model: db.Category, as: 'category', attributes: ['id', 'name', 'icon', 'color'] }
+      ],
+      order: [['createdAt', 'DESC']]
+    });
+
+    const groups = new Map();
+
+    complaints.forEach((complaint) => {
+      const neighborhoodId = complaint.neighborhoodGroupId || 'unassigned';
+      const categoryId = complaint.categoryId || 'uncategorized';
+      const key = `${neighborhoodId}:${categoryId}`;
+
+      if (!groups.has(key)) {
+        groups.set(key, {
+          neighborhoodId,
+          neighborhood: complaint.neighborhood?.name || 'Unassigned Zone',
+          categoryId,
+          category: complaint.category?.name || 'Uncategorized',
+          icon: complaint.category?.icon || '📌',
+          color: complaint.category?.color || '#CBD5E1',
+          total: 0,
+          statusCounts: {
+            pending: 0,
+            in_progress: 0,
+            resolved: 0,
+            rejected: 0,
+            escalated: 0
+          }
+        });
+      }
+
+      const group = groups.get(key);
+      group.total += 1;
+      if (group.statusCounts[complaint.status] !== undefined) {
+        group.statusCounts[complaint.status] += 1;
+      }
+    });
+
+    res.json({
+      success: true,
+      data: Array.from(groups.values())
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to build issue grouping',
+      error: error.message
+    });
+  }
+};

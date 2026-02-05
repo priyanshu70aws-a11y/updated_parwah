@@ -187,11 +187,31 @@ export const api = {
     return response.json();
   },
 
+  getUserComplaints: async () => {
+    const response = await fetch(`${API_URL}/users/me/complaints`, {
+      headers: getHeaders()
+    });
+    return response.json();
+  },
+
   // Stats
   getDashboardStats: async () => {
     const response = await fetch(`${API_URL}/stats/dashboard`);
     return response.json();
   },
+  getHeatmapData: async () => {
+    const response = await fetch(`${API_URL}/complaints/heatmap`);
+    return response.json();
+  },
+  getComplaintTimeline: async (complaintId) => {
+    const response = await fetch(`${API_URL}/complaints/${complaintId}/timeline`);
+    return response.json();
+  },
+  getNiegGroups: async () => {
+    const response = await fetch(`${API_URL}/complaints/groups/nieg`);
+    return response.json();
+  },
+  getRealtimeStream: () => new EventSource(`${API_URL}/realtime/stream`),
   // Add these functions:
 
 // Votes
