@@ -1,6 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models');
+const { protect } = require('../middleware/auth');
+
+// GET current user's complaints
+router.get('/me/complaints', protect, async (req, res) => {
+  try {
+    const complaints = await db.Complaint.findAll({
+      where: { userId: req.user.id },
+      include: [
+        { model: db.Category, as: 'category', attributes: ['id', 'name', 'icon', 'color'] },
+        { model: db.Department, as: 'department', attributes: ['id', 'name'] }
+      ],
+      order: [['createdAt', 'DESC']]
+    });
+
+    res.json({
+      success: true,
+      count: complaints.length,
+      data: complaints
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching user complaints',
+      error: error.message
+    });
+  }
+});
 
 // GET all users
 router.get('/', async (req, res) => {
