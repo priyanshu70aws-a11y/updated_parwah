@@ -307,7 +307,8 @@ const {
   createComplaint,
   updateComplaint,
   getHeatmapData,
-  getComplaintTimeline
+  getComplaintTimeline,
+  getIssueGrouping
 } = require('../controllers/complaintController');
 
 // GET complaints by status (must be before :id)
@@ -337,6 +338,9 @@ router.get('/status/:status', async (req, res) => {
 
 // Heatmap aggregation
 router.get('/heatmap', getHeatmapData);
+
+// NIEG grouping summary
+router.get('/groups/nieg', getIssueGrouping);
 
 // GET all complaints
 router.get('/', async (req, res) => {
